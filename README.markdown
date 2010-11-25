@@ -121,6 +121,7 @@ The main spec is in spec/models/user_spec.rb
 
 Gemfile
 <code>
+  gem 'cancan', '~> 1.4.0' # not sure this one is needed, but ...  
   gem 'cancan-rest-links', '~> 0.1.5'
   gem 'cream', '~> 0.7.4'  
   gem 'devise', '~> 1.2.0'    
@@ -138,7 +139,7 @@ Fix the devise user migration:
 <code>
   class DeviseCreateUsers < ActiveRecord::Migration
     def self.up
-      drop_table :users   # <-----
+      drop_table :users   # <----- temporary hack, remove after migration is run
 
       create_table(:users) do |t|
         t.string :name    # <-----
@@ -156,6 +157,8 @@ Update the Database!
 
 Create a Rails initializer 'initializers/rest_links.rb'
 
+We need to define the available roles in a central location.
+
 <code>
   module Cream
     def self.available_roles
@@ -163,14 +166,23 @@ Create a Rails initializer 'initializers/rest_links.rb'
     end
   end
   
-  # This is kinda UGLY!!! Yikes. Sorry...
-  require 'cancan-rest-links/rails/configure'
-  
+  # This is really UGLY!!! Yikes. Sorry guys...
+  require 'cancan-rest-links/rails/configure'  
   require 'cream'
   require 'cream/configure/rails'  
 </code>
 
-## Setup a filter
+We should also modify the User model in 'models/user.rb' to reference this
+
+<code>
+  def self.roles
+    Cream.available_roles # [:guest, :admin, :editor]
+  end      
+</code>
+
+## Setup a Devise user authentication filter
+
+Make all pages require login
 
 application_controller.rb
 <code>
@@ -182,9 +194,27 @@ end
 
 This will ensure that current_user is set, which is fx used by CanCan's #can? and #cannot? methods
 
+## Modify Devise views
+
+Now we need to configure the sign up form:
+
+<code>$ rails generate devise:views</code>
+
+in 'views/devise/registrations/new.html.erb'
+
+We insert some code to create a text field to enter the role of a user
+
+<code>
+  <p><%= f.label :role %><br />
+  <%= f.text_field :role %></p>
+</code>
+
+## Test the full Authorization system with users and Permits
+
 <code>$ rails server</code>
 
-Almost there... ?
+Now when we go to localhost:3000/articles, we will be sent to a page asking us to login or signup. If we signup we can create a user and experiment with different roles,
+then edit the permission files and see which links will be active or not for a given user with a given role. Nice! 
 
 ## Troubleshooting
 

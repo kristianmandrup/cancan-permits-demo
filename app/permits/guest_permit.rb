@@ -7,6 +7,7 @@ class GuestPermit < Permit::Base
     super    
     return if !role_match? user   
     can :create, Article
+    can :read, Article
  
     # licenses :user_admin, :blogging
     
