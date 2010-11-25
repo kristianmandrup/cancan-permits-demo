@@ -5,7 +5,11 @@ class SystemPermit < Permit::Base
 
   def permit?(user, options = {}) 
     super
-    true        
-    # licenses :user_admin, :blogging
+    request = options[:request]
+    if request && request.host.localhost? && localhost_manager?
+      can(:manage, :all) 
+      return :break
+    end    
   end  
-end
+end      
+

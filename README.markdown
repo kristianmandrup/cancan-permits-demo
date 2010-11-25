@@ -30,19 +30,22 @@ Uses version 0.3.0 of cancan-permits.
 
 ## Create Permits
 
-<code>$ rails g permits</code>
+<code>$ rails g permits --roles editor</code>
 
 <code>
      create  app/permits/guest_permit.rb
      create  app/permits/admin_permit.rb
+     create  app/permits/editor_permit.rb
      create  app/permits/any_permit.rb
      create  app/permits/system_permit.rb
-     create  app/permits/licenses.rb  
+
+     create  app/licenses/user_admin_license.rb  
+     create  app/licenses/blogging_license.rb  
 </code>
 
 ## Test that it works
 
-First run <code>$ rake db:migrate && rake db:sedd</code> in the terminal to setup and init the database.
+First run <code>$ rake db:migrate && rake db:test:prepare && rake db:seed</code> in the terminal to setup and init the database.
 
 The main test is in spec/models/user
 

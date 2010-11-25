@@ -1,57 +1,50 @@
 require 'spec_helper'
 require 'cancan/matchers'
 
-describe "User permissions to operate on Articles" do  
-  before :each do 
-    puts "User is defined" if defined? User
-    puts "Article is defined" if defined? Article
-    
-    editor_user = mock_model(User, :name => "Editor user", :role => "editor")
-    editor_user.stub!(:has_role?).and_return(true)
-    # editor_user.stub!(:role).and_return("editor")
+module Permits::Roles
+  def self.available
+    User.roles
+  end
+end
 
-    admin_user = mock_model(User, :name => "Admin user", :role => "admin")
-    admin_user.stub!(:has_role?).and_return(true)
+describe "User permissions to operate on Articles" do
+  before do
+    @editor_user         = User.create(:name => "Editor",  :role => "editor")
+    @admin_user          = User.create(:name => "Admin",   :role => "admin")
 
-    # admin_user.stub!(:name).and_return("Admin user")
-    # admin_user.stub!(:role).and_return("admin")
+    @editor_article   = Article.create(:user => @editor_user, :name => "Editor article")
+    @admin_article    = Article.create(:user => @admin_user, :name => "Admin article")          
 
-    @editor_article = mock_model(Article)
-    @editor_article.stub!(:user).and_return(editor_user)
-    @editor_article.stub!(:name).and_return('Editor article')
-
-    @admin_article = mock_model(Article)
-    @admin_article.stub!(:user).and_return(admin_user)
-    @admin_article.stub!(:name).and_return('Admin article')  
+    @editor = Permits::Ability.new(@editor_user)    
     
-    @editor = Permits::Ability.new(editor_user)    
-    
-    # @editor_article = Article.where(:user => editor_user).first
-    # @admin_article  = Article.where(:user.neq => editor_user).first 
-    
-    puts "Editor: #{@editor.inspect}"
-    puts "Editor article: #{@editor_article.inspect}"
-    puts "Admin article: #{@admin_article.inspect}"
+    # specify custom options to consider in permit
+    # @editor = Permits::Ability.new(@editor_user, :request => request)    
   end
 
-  it "should be able to :read Article he owns" do
-    @editor.should be_able_to(:read, Article)
-    @editor.should be_able_to(:read, @editor_article)      
-  end
+  context "Editor" do
+    it "should be able to :read any Article" do
+      @editor.should be_able_to(:read, Article)
+    end
 
-  it "should be able to :update Article he owns" do
-    @editor.should be_able_to(:update, @editor_article)      
-  end
+    it "should be able to :read Article he owns" do
+      @editor.should be_able_to(:read, @editor_article)      
+    end
 
-  it "should NOT be able to :update Article he does NOT own" do
-    @editor.should_not be_able_to(:update, @admin_article)      
+    it "should be able to :update Article he owns" do
+      @editor.should be_able_to(:update, @editor_article)      
+    end
+    
+    it "should NOT be able to :update Article he does NOT own" do
+      @editor.should_not be_able_to(:update, @admin_article)      
+    end
+    
+    it "should be able to :delete Article he owns" do
+      @editor.should be_able_to(:delete, @editor_article)      
+    end
+    
+    it "should NOT be able to :update Article he does NOT own" do
+      @editor.should_not be_able_to(:delete, @admin_article)      
+    end
   end
   
-  it "should be able to :delete Article he owns" do
-    @editor.should be_able_to(:delete, @editor_article)      
-  end
-  
-  it "should NOT be able to :update Article he does NOT own" do
-    @editor.should_not be_able_to(:delete, @adminarticle)      
-  end
 end
