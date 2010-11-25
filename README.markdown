@@ -216,6 +216,33 @@ We insert some code to create a text field to enter the role of a user
 Now when we go to localhost:3000/articles, we will be sent to a page asking us to login or signup. If we signup we can create a user and experiment with different roles,
 then edit the permission files and see which links will be active or not for a given user with a given role. Nice! 
 
+## Contributions
+
+In order to contribute to and improve the framework, I suggest you start by cloning the gems used:
+
+<code>
+  $ git clone git://github.com/kristianmandrup/cancan-rest-links.git
+  $ git clone git://github.com/kristianmandrup/cream.git
+  $ git clone git://github.com/kristianmandrup/cancan-permits.git  
+</code>
+
+Then configure the Gemfile to point to your local gem copy 
+
+Gemfile
+<code>
+  gem 'cancan-permits', '~> 0.3.1', :path => '/...//cancan-permits'
+  gem 'cancan-rest-links', '~> 0.1.6', :path => '...//cancan-rest-links'
+  gem 'cream', '~> 0.7.4', :path => '/...//cancan-permits'  
+</code>
+
+Then you are free to put whatever debugging code (p puts and ... statetement?) in your local copy of the gems.
+
+### Design trouble areas
+
+Currently there is a very bad dependency issue between *cream* and *cancan-rest-links* which should be fixed ASAP. 
+It should also not be required to have the *#auth_labels* method and it should definetely not be required to be present on the View! 
+A redesign of this part is essential!
+
 ## Troubleshooting
 
 If you have problem with the rspec executable version, uninstall any rspec-core > 2.0.1 and try again.
