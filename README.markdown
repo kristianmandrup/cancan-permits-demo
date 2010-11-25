@@ -1,6 +1,6 @@
 # Rails 3 demo app for using CanCan permits
 
-Uses version 0.2.9 of cancan-permits.
+Uses version 0.3.0 of cancan-permits.
 
 ## Create Model
 
@@ -48,4 +48,19 @@ The main test is in spec/models/user
 
 <code>$ rspec models/user_spec.rb</code>
 
-Does it work!?
+If you have problem with rspec version, uninstall any rspec-core > 2.0.1 and try again.
+
+Uninstall executables
+<code>$ gem uninstall rspec-core -v 2.1.0</code>
+<code>$ gem uninstall rspec-expectations -v 2.1.0</code>
+
+Reinstall executables
+<code>$ gem uninstall rspec-core -v 2.0.1</code>
+
+<code>
+  License BloggingLicense could not be enforced using #<SystemPermit:0x0000010320e668 @ability=#<Permits::Ability:0x0000010320ee60 @can_definitions=[#<CanCan::CanDefinition:0x00000103206378 @match_all=false, @base_behavior=true, @actions=[:manage], @subjects=[User(Table doesn't exist)], @conditions={}, @block=nil>]>, @strategy=:default>  
+</code>
+
+The error seems to be caused by the User class not seeming to have a corresponding table!?
+
+*Please help me fix the spec so that it works :)*

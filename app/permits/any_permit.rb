@@ -4,8 +4,7 @@ class AnyPermit < Permit::Base
   end
 
   def permit?(user, options = {}) 
-    super
-        
-    licenses :user_admin, :blogging
+    super        
+    # licenses :user_admin, :blogging
   end  
 end

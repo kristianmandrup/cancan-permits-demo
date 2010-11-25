@@ -1,14 +1,20 @@
 require 'spec_helper'
+require 'cancan/matchers'
 
 describe "User permissions to operate on Articles" do  
-  before do 
-    editor_user = mock_model(User)
-    editor_user.stub!(:name).and_return("Editor user")
-    editor_user.stub!(:role).and_return("editor")
+  before :each do 
+    puts "User is defined" if defined? User
+    puts "Article is defined" if defined? Article
+    
+    editor_user = mock_model(User, :name => "Editor user", :role => "editor")
+    editor_user.stub!(:has_role?).and_return(true)
+    # editor_user.stub!(:role).and_return("editor")
 
-    admin_user = mock_model(User)
-    admin_user.stub!(:name).and_return("Admin user")
-    admin_user.stub!(:role).and_return("admin")
+    admin_user = mock_model(User, :name => "Admin user", :role => "admin")
+    admin_user.stub!(:has_role?).and_return(true)
+
+    # admin_user.stub!(:name).and_return("Admin user")
+    # admin_user.stub!(:role).and_return("admin")
 
     @editor_article = mock_model(Article)
     @editor_article.stub!(:user).and_return(editor_user)

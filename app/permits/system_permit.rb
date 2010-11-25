@@ -5,7 +5,7 @@ class SystemPermit < Permit::Base
 
   def permit?(user, options = {}) 
     super
-        
-    licenses :user_admin, :blogging
+    true        
+    # licenses :user_admin, :blogging
   end  
 end
