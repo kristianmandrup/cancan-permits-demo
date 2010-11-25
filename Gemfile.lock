@@ -1,10 +1,24 @@
 PATH
-  remote: /Users/kristianconsult/Development/Languages/Ruby/Apps/Gems/cancan-permits
+  remote: /Users/kristianconsult/Development/Languages/Ruby/Apps/Gems/cancan-rest-links
   specs:
-    cancan-permits (0.3.0)
-      activesupport (>= 3.0.1)
-      cancan (~> 1.4.1)
-      logging_assist (>= 0.1.6)
+    cancan-rest-links (0.1.5)
+      cancan (~> 1.4.0)
+      r3_plugin_toolbox (>= 0.4.0)
+      require_all (~> 1.2.0)
+      sugar-high (~> 0.3.0)
+
+PATH
+  remote: /Users/kristianconsult/Development/Languages/Ruby/Apps/Gems/cream
+  specs:
+    cream (0.7.4)
+      cancan (>= 1.4.0)
+      cancan-permits (>= 0.3.2)
+      cancan-rest-links (>= 0.1.5)
+      devise (>= 1.2.0)
+      devise-links (>= 0.1.4)
+      logging_assist (~> 0.1.6)
+      r3_plugin_toolbox (>= 0.4.0)
+      rails (>= 3.0.1)
       rails3_artifactor (~> 0.3.1)
       require_all (~> 1.2.0)
       sugar-high (~> 0.3.0)
@@ -40,8 +54,16 @@ GEM
       activesupport (= 3.0.3)
     activesupport (3.0.3)
     arel (2.0.4)
+    bcrypt-ruby (2.1.2)
     builder (2.1.2)
     cancan (1.4.1)
+    cancan-permits (0.3.2)
+      activesupport (>= 3.0.1)
+      cancan (~> 1.4.1)
+      logging_assist (>= 0.1.6)
+      rails3_artifactor (~> 0.3.1)
+      require_all (~> 1.2.0)
+      sugar-high (~> 0.3.0)
     capybara (0.3.9)
       culerity (>= 0.2.4)
       mime-types (>= 1.16)
@@ -60,6 +82,14 @@ GEM
     cucumber-rails (0.3.2)
       cucumber (>= 0.8.0)
     culerity (0.2.12)
+    devise (1.2.0)
+      bcrypt-ruby (~> 2.1.2)
+      warden (~> 0.10.7)
+    devise-links (0.1.5)
+      devise (>= 1.2)
+      r3_plugin_toolbox (~> 0.4.0)
+      require_all (~> 1.2.0)
+      sugar-high (~> 0.3.0)
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -93,6 +123,10 @@ GEM
       rake
     nokogiri (1.4.3.1)
     polyglot (0.3.1)
+    r3_plugin_toolbox (0.4.0)
+      rails (~> 3.0)
+      require_all (~> 1.2.0)
+      sugar-high (~> 0.3.0)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
@@ -152,6 +186,8 @@ GEM
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
+    warden (0.10.7)
+      rack (>= 1.0.0)
     webrat (0.7.2)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -161,9 +197,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cancan-permits (~> 0.3.0)!
+  cancan (~> 1.4.0)
+  cancan-permits (~> 0.3.1)
+  cancan-rest-links (~> 0.1.5)!
   capybara
+  cream (~> 0.7.4)!
   cucumber-rails (>= 0.3.2)
+  devise (~> 1.2.0)
   meta_where (~> 0.9.9)
   rails (= 3.0.3)
   rspec (= 2.0.1)

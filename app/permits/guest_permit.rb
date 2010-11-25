@@ -5,9 +5,7 @@ class GuestPermit < Permit::Base
 
   def permit?(user, options = {}) 
     super    
-    return if !role_match? user
-    
-    # can :read, [Comment, Post]
+    return if !role_match? user   
     can :create, Article
  
     # licenses :user_admin, :blogging

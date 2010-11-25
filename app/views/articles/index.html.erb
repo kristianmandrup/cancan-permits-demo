@@ -15,13 +15,14 @@
     <td><%= article.user_id %></td>
     <td><%= article.name %></td>
     <td><%= article.body %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to 'Edit', edit_article_path(article) %></td>
-    <td><%= link_to 'Destroy', article, :confirm => 'Are you sure?', :method => :delete %></td>
+
+    <td><%= show_link article %></td>
+    <!-- <td><%= edit_link article %></td>
+    <td><%= destroy_link article %></td> -->
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Article', new_article_path %>
+<%#= new_link Article %>

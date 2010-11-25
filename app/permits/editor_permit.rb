@@ -5,8 +5,7 @@ class EditorPermit < Permit::Base
 
   def permit?(user, options = {}) 
     super
-    return if !role_match? user
-    
+    return if !role_match? user    
     owns(user, Article)
 
     # a user can manage comments he/she created
