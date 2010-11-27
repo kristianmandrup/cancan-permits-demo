@@ -122,7 +122,7 @@ The main spec is in spec/models/user_spec.rb
 Gemfile
 <code>
   gem 'cancan', '~> 1.4.0' # not sure this one is needed, but ...  
-  gem 'cancan-rest-links', '~> 0.1.5'
+  gem 'cancan-rest-links', '~> 0.1.6'
   gem 'cream', '~> 0.7.4'  
   gem 'devise', '~> 1.2.0'    
 </code>
@@ -164,20 +164,21 @@ We need to define the available roles in a central location.
     def self.available_roles
       [:guest, :admin, :editor]
     end
-  end
-  
-  # This is really UGLY!!! Yikes. Sorry guys...
-  require 'cancan-rest-links/rails/configure'  
-  require 'cream'
-  require 'cream/configure/rails'  
+  end  
 </code>
 
-We should also modify the User model in 'models/user.rb' to reference this
+We should also modify the User model in 'models/user.rb' to reference this and add a #has_role? method
 
 <code>
+class User
   def self.roles
     Cream.available_roles # [:guest, :admin, :editor]
   end      
+  
+  def has_role? role
+    (self.role || 'guest').to_sym == role.to_sym
+  end  
+end
 </code>
 
 ## Setup a Devise user authentication filter
@@ -237,21 +238,9 @@ Gemfile
 
 Then you are free to put whatever debugging code (p puts and ... statetement?) in your local copy of the gems.
 
-### Design trouble areas
-
-Currently there is a very bad dependency issue between *cream* and *cancan-rest-links* which should be fixed ASAP. 
-It should also not be required to have the *#auth_labels* method and it should definetely not be required to be present on the View! 
-A redesign of this part is essential!
-
 ## Troubleshooting
 
-If you have problem with the rspec executable version, uninstall any rspec-core > 2.0.1 and try again.
+If you have problem with the rspec executable version, reinstall any rspec > 2.0.1 and try again.
 
-<code>$ gem list rspec-core</code>
-
-Uninstall executables:
-<code>$ gem uninstall rspec-core -v 2.1.0</code>
-<code>$ gem uninstall rspec-expectations -v 2.1.0</code>
-
-Reinstall executables:
-<code>$ gem uninstall rspec-core -v 2.0.1</code>
+<code>$ gem list rspec</code>
+<code>$ gem install rspec -v 2.1.0</code>
